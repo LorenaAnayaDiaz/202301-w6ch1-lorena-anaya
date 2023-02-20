@@ -9,6 +9,7 @@ import {
   incrementIfOdd,
   selectCount,
   resetCounter,
+  fetchRandomNumber,
 } from "./counterSlice";
 import styles from "./Counter.module.css";
 
@@ -68,6 +69,13 @@ export function Counter() {
           onClick={() => dispatch(resetCounter())}
         >
           Reset
+        </button>
+
+        <button
+          className={styles.asyncButton}
+          onClick={() => dispatch(fetchRandomNumber())}
+        >
+          Init from API
         </button>
       </div>
     </div>

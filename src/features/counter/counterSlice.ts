@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState, AppThunk } from "../../app/store";
-import { fetchCount } from "./counterAPI";
+import { fetchCount, getRandomNumber } from "./counterAPI";
 
 export interface CounterState {
   value: number;
@@ -23,6 +23,15 @@ export const incrementAsync = createAsyncThunk(
     const response = await fetchCount(amount);
     // The value we return becomes the `fulfilled` action payload
     return response.data;
+  }
+);
+
+export const fetchRandomNumber = createAsyncThunk(
+  "counter/fetchRandomNumber",
+  async () => {
+    const response = await getRandomNumber();
+    const randomNumber = response.json();
+    return randomNumber;
   }
 );
 
@@ -61,6 +70,16 @@ export const counterSlice = createSlice({
         state.value += action.payload;
       })
       .addCase(incrementAsync.rejected, (state) => {
+        state.status = "failed";
+      })
+      .addCase(fetchRandomNumber.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchRandomNumber.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.value = action.payload;
+      })
+      .addCase(fetchRandomNumber.rejected, (state) => {
         state.status = "failed";
       });
   },
