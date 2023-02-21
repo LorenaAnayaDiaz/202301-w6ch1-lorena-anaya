@@ -10,11 +10,13 @@ import {
   selectCount,
   resetCounter,
   fetchRandomNumber,
+  selectStatus,
 } from "./counterSlice";
 import styles from "./Counter.module.css";
 
 export function Counter() {
   const count = useAppSelector(selectCount);
+  const status = useAppSelector(selectStatus);
   const dispatch = useAppDispatch();
   const [incrementAmount, setIncrementAmount] = useState("2");
 
@@ -72,7 +74,7 @@ export function Counter() {
         </button>
 
         <button
-          className={styles.asyncButton}
+          className={status === "loading" ? styles.asyncButton : styles.button}
           onClick={() => dispatch(fetchRandomNumber())}
         >
           Init from API
